@@ -1,46 +1,66 @@
 # Install and load the jsonlite package
+require("jsonlite")
 
 # Make a variable base.url that has the same base url from the omdb documentation.
 # (Hint: visit https://www.omdbapi.com/ to find the base url)
+base.url <- "http://www.omdbapi.com/?"
 
 # Make a variable called movie that has the names of your favorite movie
+movie <- "The Terminal"
 
-# Make a variable called move.no.spaces that holds movie where all the spaces
+# Make a variable called movie.no.spaces that holds movie where all the spaces
 # are replaced with the '+' character
+movie.no.spaces <- "The+Terminal"
 
 # Make a variable called "parameters" that holds a string with the parameters
 # to pass to the API. View the OMDb documentation to see which parameters
 # are available. Remember to separate parameters with the '&' character.
+parameters <- paste0("t=", movie.no.spaces)
 
 # Make a variable called request that is a string of a request URL made up of the base URL
 # and the parameters string
-
+request <-  paste0(base.url, parameters)
+  
 # Use fromJSON to retrieve JSON data from the omdb api using your request URL.
 # Store the result in a variable called movie.data
+movie.data <- fromJSON(request)
 
 # Make movie_data into a data frame using as.data.frame
+movie.data <- as.data.frame(movie.data)
 
 # Write a function called Director that accepts a data frame of movie info and returns
 # A vector of strings that states a movie and the director of said movie.
+Director <- function (movie.data) {
+ return(paste(movie.data$Title, "was directed by", movie.data$Director))
+}
+
 
 # Call Director with your favorite movie, and assign it to the variable movie.director
+movie.director <- Director(movie.data)
 
 # Bonus 
 
 # Knowing the director of on movie is okay, but it'd be great to know the directors of different
 # movies. 
 
-# Start by making a vecotr of movies and save it to the variable movie.list
+# Start by making a vector of movies and save it to the variable movie.list
+movie.list <- c("2001: A Space Odyssey", "Roman Holiday")
 
 # Remove spaces from each movie title
+movie.list.no.spaces <- gsub(" ", "+", movie.list)
 
 # Prepare this list to be passed in as parameters for the API
+parameters <- paste0("t=", movie.list.no.spaces)
 
 # Create API URL request and assign it to the variable api.request
+request <-  paste0(base.url, parameters)
 
 # For every entry in the vector api.request, APPLY the function fromJSON to make a list of lists
 # one entry for each request and assign this to a variable called data. 
 # (Hint: ?lapply. It's similar a 'for' loop but better!)
+?lapply
+
+lapply(request, fromJSON)
 
 # Using the function do.call, call rbind on each entry in data (check out the do.call documentation)
 
